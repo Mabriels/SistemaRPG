@@ -28,19 +28,23 @@ public class ClasseServico
         {
             classe.Atributo = "DEF: 3, FOR: 3, INT: 6, STM: 3";
         }
-        if(classe.Nome == "Guerreiro")
+        else if(classe.Nome == "Guerreiro")
         {
             classe.Atributo = "DEF: 3, FOR: 6, INT: 2, STM: 4";
         }
-        if(classe.Nome == "Arqueiro")
+        else if(classe.Nome == "Arqueiro")
         {
             classe.Atributo = "DEF: 2, FOR: 3, INT: 5, STM: 5";
         }
-        if(classe.Nome == "Curandeiro")
+        else if(classe.Nome == "Curandeiro")
         {
             classe.Atributo = "DEF: 4, FOR: 3, INT: 5, STM: 3";
         }
-        
+        else
+        {
+            classe.Atributo = "DEF: 3, FOR: 3, INT: 3, STM: 6";
+        }
+
         //Enviar para o BD atraves do repositorio
         classe = _classeRepositorio.CriarClasse(classe);
 
