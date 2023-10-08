@@ -16,15 +16,9 @@ public class Classe
     public string Atributo { get; set; }
 
 
-    //Referenciamento 1:1
     //Propriedade de Navegação
-    public Personagem Personagem { get; set; }
+    public List<Personagem> Personagens { get; set; }
 
-    //Referenciamento 1:N
-    //Propriedade de Navegação
-    public Equipamento Equipamento { get; set; }
-
-    //Chave estrangeira
-    public int PersonagemId { get; set; }
-    public int EquipamentoId { get; set; }
+    public List<Equipamento> Equipamentos { get; set; }
+   
 }

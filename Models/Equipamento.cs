@@ -21,5 +21,8 @@ public class Equipamento
 
 
     //Propriedade de Navegação
-    public List<Classe> Classes { get; set; }
+    public Classe Classe { get; set; }
+
+    //Chave Estrangeira
+    public int ClasseId { get; set; }
 }

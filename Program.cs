@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaRPG.Data;
+using SistemaRPG.Repositorio;
+using SistemaRPG.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,9 @@ builder.Services.AddDbContext<ContextoBD>(
 );
 
 // Add services to the container.
+
+builder.Services.AddScoped<ClasseRepositorio>();
+builder.Services.AddScoped<ClasseServico>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

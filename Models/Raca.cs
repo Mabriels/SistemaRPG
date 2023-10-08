@@ -17,9 +17,7 @@ public class Raca
 
 
     //Propriedade de Navegação
-    public Personagem Personagem { get; set; }
+    public List<Personagem> Personagens { get; set; }
 
-    //Chave estrangeira
-    public int PersonagemId { get; set; }
 
 }

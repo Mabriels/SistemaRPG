@@ -28,21 +28,11 @@ namespace SistemaRPG.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(80)");
 
-                    b.Property<int>("EquipamentoId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("varchar(80)");
 
-                    b.Property<int>("PersonagemId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("EquipamentoId");
-
-                    b.HasIndex("PersonagemId");
 
                     b.ToTable("Classes");
                 });
@@ -57,6 +47,9 @@ namespace SistemaRPG.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(80)");
 
+                    b.Property<int>("ClasseId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("varchar(80)");
@@ -65,6 +58,8 @@ namespace SistemaRPG.Migrations
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClasseId");
 
                     b.ToTable("Equipamentos");
                 });
@@ -79,6 +74,9 @@ namespace SistemaRPG.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(80)");
 
+                    b.Property<int>("ClasseId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Dinheiro")
                         .HasColumnType("decimal(10,2)");
 
@@ -89,7 +87,14 @@ namespace SistemaRPG.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(80)");
 
+                    b.Property<int>("RacaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ClasseId");
+
+                    b.HasIndex("RacaId");
 
                     b.ToTable("Personagens");
                 });
@@ -108,56 +113,51 @@ namespace SistemaRPG.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(80)");
 
-                    b.Property<int>("PersonagemId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonagemId");
 
                     b.ToTable("Racas");
                 });
 
-            modelBuilder.Entity("SistemaRPG.Models.Classe", b =>
-                {
-                    b.HasOne("SistemaRPG.Models.Equipamento", "Equipamento")
-                        .WithMany("Classes")
-                        .HasForeignKey("EquipamentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SistemaRPG.Models.Personagem", "Personagem")
-                        .WithMany("Classes")
-                        .HasForeignKey("PersonagemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Equipamento");
-
-                    b.Navigation("Personagem");
-                });
-
-            modelBuilder.Entity("SistemaRPG.Models.Raca", b =>
-                {
-                    b.HasOne("SistemaRPG.Models.Personagem", "Personagem")
-                        .WithMany("Racas")
-                        .HasForeignKey("PersonagemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Personagem");
-                });
-
             modelBuilder.Entity("SistemaRPG.Models.Equipamento", b =>
                 {
-                    b.Navigation("Classes");
+                    b.HasOne("SistemaRPG.Models.Classe", "Classe")
+                        .WithMany("Equipamentos")
+                        .HasForeignKey("ClasseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classe");
                 });
 
             modelBuilder.Entity("SistemaRPG.Models.Personagem", b =>
                 {
-                    b.Navigation("Classes");
+                    b.HasOne("SistemaRPG.Models.Classe", "Classe")
+                        .WithMany("Personagens")
+                        .HasForeignKey("ClasseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Racas");
+                    b.HasOne("SistemaRPG.Models.Raca", "Raca")
+                        .WithMany("Personagens")
+                        .HasForeignKey("RacaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classe");
+
+                    b.Navigation("Raca");
+                });
+
+            modelBuilder.Entity("SistemaRPG.Models.Classe", b =>
+                {
+                    b.Navigation("Equipamentos");
+
+                    b.Navigation("Personagens");
+                });
+
+            modelBuilder.Entity("SistemaRPG.Models.Raca", b =>
+                {
+                    b.Navigation("Personagens");
                 });
 #pragma warning restore 612, 618
         }
