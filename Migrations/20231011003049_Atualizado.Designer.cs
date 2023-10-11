@@ -10,8 +10,8 @@ using SistemaRPG.Data;
 namespace SistemaRPG.Migrations
 {
     [DbContext(typeof(ContextoBD))]
-    [Migration("20231007192837_Inicial")]
-    partial class Inicial
+    [Migration("20231011003049_Atualizado")]
+    partial class Atualizado
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

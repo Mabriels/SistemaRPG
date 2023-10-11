@@ -21,6 +21,8 @@ builder.Services.AddDbContext<ContextoBD>(
 
 builder.Services.AddScoped<ClasseRepositorio>();
 builder.Services.AddScoped<ClasseServico>();
+builder.Services.AddScoped<RacaRepositorio>();
+builder.Services.AddScoped<RacaServico>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

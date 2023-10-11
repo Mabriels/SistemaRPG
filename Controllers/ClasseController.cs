@@ -5,7 +5,7 @@ using SistemaRPG.Services;
 namespace SistemaRPG.Controllers;
 
 [Controller]
-[Route("/classe")]
+[Route("classe")]
 public class ClasseController : ControllerBase
 {
 
@@ -28,4 +28,16 @@ public class ClasseController : ControllerBase
     }
 
 
+    [HttpGet]
+    public List<ClasseResposta> GetClasses()
+    {
+        //retornar a resposta do metodo listas classes do servico
+        return _classeServico.ListarClasses();
+    }
+
+    [HttpGet("{id:int}")]
+    public ClasseResposta GetClasse([FromRoute] int id)
+    {
+        return _classeServico.BuscarClassePeloId(id);
+    }
 }

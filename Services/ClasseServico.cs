@@ -50,10 +50,55 @@ public class ClasseServico
 
 
         //Copiar os modelos para a resposta
-        ClasseResposta classeResposta = new ClasseResposta();
-        classeResposta.Id = classe.Id;
-        classeResposta.Nome = classe.Nome;
-        classeResposta.Atributo = classe.Atributo;
+        var classeResposta = ConverterModeloParaResposta(classe);
+
+        return classeResposta;
+    }
+
+    public List<ClasseResposta> ListarClasses()
+    {
+        //Pedir ao repositorio todos as classes
+        var classes = _classeRepositorio.ListarClasses();
+
+        //Copiar os dados dos modelos para as respostas
+        List<ClasseResposta> classeRespostas = new(); //Lista vazia
+        
+        foreach(var classe in classes)
+        {
+            var classeResposta = ConverterModeloParaResposta(classe);
+
+            //adicionar na lista 
+            classeRespostas.Add(classeResposta);
+
+        }
+
+        //Retornar a lista de respostas
+        return classeRespostas;
+    }
+
+    public ClasseResposta BuscarClassePeloId(int id)
+    {
+        //Pedir ao repositorio buscar pelo id
+        var classe = _classeRepositorio.BuscarClassePeloId(id);
+
+        if(classe is null)
+        {
+            return null; //No futuro vou mudar para uma exceção
+        }
+
+        //Copiar do modelo para a resposta
+        var classeResposta = ConverterModeloParaResposta(classe);
+
+        //retornando a resposta
+        return classeResposta;
+    }
+
+    private ClasseResposta ConverterModeloParaResposta(Classe modelo)
+    {
+        var classeResposta = new ClasseResposta();
+        classeResposta.Id = modelo.Id;
+        classeResposta.Nome = modelo.Nome;
+        classeResposta.Atributo = modelo.Atributo;
 
         return classeResposta;
     }

@@ -21,4 +21,15 @@ public class ClasseRepositorio
 
         return classe;
     }
+
+    public List<Classe> ListarClasses()
+    {
+        return _contexto.Classes.ToList();
+    }
+
+    public Classe BuscarClassePeloId(int id)
+    {
+        return _contexto.Classes.FirstOrDefault( classe => classe.Id == id );
+    }
+    
 }
