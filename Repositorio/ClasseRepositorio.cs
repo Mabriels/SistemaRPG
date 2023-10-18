@@ -32,4 +32,19 @@ public class ClasseRepositorio
         return _contexto.Classes.FirstOrDefault( classe => classe.Id == id );
     }
     
+
+    public void RemoverClasse(Classe classe)
+    {
+        //Remover do contexto
+        _contexto.Remove(classe);
+
+        //Salvar mudanças feitas
+        _contexto.SaveChanges();
+    }
+
+    public void AtualizarClasse()
+    {
+        //Mandar salvar qualquer atualização feita no banco de dados
+        _contexto.SaveChanges();
+    }
 }

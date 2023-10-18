@@ -40,4 +40,23 @@ public class ClasseController : ControllerBase
     {
         return _classeServico.BuscarClassePeloId(id);
     }
+
+    [HttpDelete("{id:int}")]
+    public void DeleteClasse([FromRoute] int id)
+    {
+        //Mandando o serviço excluir
+        _classeServico.RemoverClasse(id);
+    }
+
+    [HttpPut("{id:int}")]
+    public ClasseResposta PutClasse([FromRoute] int id, [FromBody] ClasseCriarAtualizarRequisicao classeEditada)
+    {
+        //Enviar para o serviço editar
+        var classeResposta = _classeServico.AtualizarClasse(id, classeEditada);
+
+        //Retornando para o app cliente (JSON)
+        return classeResposta;
+    }
+
+
 }

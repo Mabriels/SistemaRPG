@@ -37,4 +37,19 @@ public class RacaController : ControllerBase
     {
         return _racaServico.BuscarRacaPeloId(id);
     }
+
+    [HttpDelete("{id:int}")]
+    public void DeleteRaca([FromRoute] int id)
+    {
+        _racaServico.RemoverRaca(id);
+    }
+
+    [HttpPut("{id:int}")]
+    public RacaResposta PutRaca([FromRoute] int id, [FromBody] RacaCriarAtualizarRequisicao racaEditada)
+    {
+        var racaResposta =  _racaServico.AtualizarRaca(id, racaEditada);
+
+        return racaResposta;
+
+    }
 }

@@ -32,4 +32,17 @@ public class RacaRepositorio
     {
         return _contexto.Racas.FirstOrDefault(raca => raca.Id == id);
     }
+
+    public void RemoverRaca(Raca raca)
+    {
+        _contexto.Remove(raca);
+
+        _contexto.SaveChanges();
+
+    }
+
+    public void AtualizarRaca()
+    {
+        _contexto.SaveChanges();
+    }
 }

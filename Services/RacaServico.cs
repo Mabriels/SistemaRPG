@@ -23,26 +23,8 @@ public class RacaServico
 
         raca.Nome = novaRaca.Nome;
 
-
-        if(raca.Nome == "Elfo")
-        {
-            raca.Atributo = "DEF: 3, FOR: 4, INT: 5, STM: 3";
-        }
-
-        else if(raca.Nome == "Humano")
-        {
-            raca.Atributo = "DEF: 4, FOR: 4, INT: 3, STM: 4";
-        }
-
-        else if(raca.Nome == "Anão")
-        {
-            raca.Atributo = "DEF: 4, FOR: 6, INT: 2, STM: 3";
-        }
-
-        else
-        {
-            raca.Atributo = "DEF: 3, FOR: 3, INT: 3, STM: 6";
-        }
+        DefinicaoRaca(raca);
+        
 
         raca = _racaRepositorio.CriarRaca(raca);
 
@@ -84,6 +66,46 @@ public class RacaServico
         return racaResposta;
     }
 
+    public void RemoverRaca(int id)
+    {
+        var raca = _racaRepositorio.BuscarRacaPeloId(id);
+
+        if (raca is null)
+        {
+            return ;
+        }
+
+        _racaRepositorio.RemoverRaca(raca);
+    }
+
+    public RacaResposta AtualizarRaca(int id, RacaCriarAtualizarRequisicao racaEditada)
+    {
+        //Buscando a raça no BD
+        var raca = _racaRepositorio.BuscarRacaPeloId(id);
+
+        if (raca is null)
+        {
+            return null;
+        }
+
+        //Copiando os dados da requisicao para o modelo
+        raca.Nome = racaEditada.Nome;
+
+        //Regra Especifica
+        DefinicaoRaca(raca);
+
+        //Mandando para o repositorio atualizar
+        _racaRepositorio.AtualizarRaca();
+
+        //Copiando o modelo para resposta com o metodo criado
+        var racaResposta = ConverterModeloParaResposta(raca);
+
+        //Retornando para o controlador
+        return racaResposta;
+
+    }
+
+
     private RacaResposta ConverterModeloParaResposta(Raca modelo)
     {
         var racaResposta = new RacaResposta();
@@ -92,5 +114,30 @@ public class RacaServico
         racaResposta.Atributo = modelo.Atributo;
 
         return racaResposta;
+    }
+
+    private Raca DefinicaoRaca(Raca raca)
+    {
+        if(raca.Nome == "Elfo")
+        {
+            raca.Atributo = "DEF: 3, FOR: 4, INT: 5, STM: 3";
+        }
+
+        else if(raca.Nome == "Humano")
+        {
+            raca.Atributo = "DEF: 4, FOR: 4, INT: 3, STM: 4";
+        }
+
+        else if(raca.Nome == "Anão")
+        {
+            raca.Atributo = "DEF: 4, FOR: 6, INT: 2, STM: 3";
+        }
+
+        else
+        {
+            raca.Atributo = "DEF: 3, FOR: 3, INT: 3, STM: 6";
+        }
+
+        return raca;
     }
 }
