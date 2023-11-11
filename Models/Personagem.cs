@@ -15,12 +15,16 @@ public class Personagem
     [Required]
     public int Idade { get; set; }
     
-    [Column(TypeName= "varchar(80)")]
     [Required]
+    [Column(TypeName= "varchar(80)")]
     public string Atributo { get; set; }
     
     [Column(TypeName= "decimal(10,2)")]
     public decimal Dinheiro { get; set; }
+    
+    [Required]
+    [Column(TypeName="varchar(80)")]
+    public DateTime DataCriacao { get; set; }
 
 
     //Propriedade de Navegação

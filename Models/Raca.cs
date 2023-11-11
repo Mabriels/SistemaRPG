@@ -14,6 +14,10 @@ public class Raca
     [Required]
     [Column(TypeName="varchar(80)")]
     public string Atributo { get; set; }
+    
+    [Required]
+    [Column(TypeName="varchar(80)")]
+    public DateTime DataCriacao { get; set; }
 
 
     //Propriedade de Navegação

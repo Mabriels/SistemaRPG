@@ -18,38 +18,63 @@ public class RacaController : ControllerBase
 
 
     [HttpPost]
-    public RacaResposta PostRaca([FromBody] RacaCriarAtualizarRequisicao novaRaca)
+    public ActionResult<RacaResposta> PostRaca([FromBody] RacaCriarAtualizarRequisicao novaRaca)
     {
         var racaResposta = _racaServico.CriarRaca(novaRaca);
 
-        return racaResposta;
+        // return racaResposta;
+
+        // return StatusCode(201, racaResposta);
+        return CreatedAtAction(nameof(GetRaca), new {id = racaResposta.Id}, racaResposta);
     }
 
     [HttpGet]
-    public List<RacaResposta> GetRacas()
+    public ActionResult<List<RacaResposta>> GetRacas()
     {
-        return _racaServico.ListarRacas();
+        return Ok(_racaServico.ListarRacas());
     }
     
 
     [HttpGet("{id:int}")]
-    public RacaResposta GetRaca([FromRoute] int id)
+    public ActionResult<RacaResposta> GetRaca([FromRoute] int id)
     {
-        return _racaServico.BuscarRacaPeloId(id);
+        try
+        {
+            return Ok(_racaServico.BuscarRacaPeloId(id));
+        }
+        catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
+        
     }
 
     [HttpDelete("{id:int}")]
-    public void DeleteRaca([FromRoute] int id)
+    public ActionResult DeleteRaca([FromRoute] int id)
     {
-        _racaServico.RemoverRaca(id);
+        try
+        {
+            _racaServico.RemoverRaca(id); 
+
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+           return NotFound(e.Message);
+        }
     }
 
     [HttpPut("{id:int}")]
-    public RacaResposta PutRaca([FromRoute] int id, [FromBody] RacaCriarAtualizarRequisicao racaEditada)
+    public ActionResult<RacaResposta> PutRaca([FromRoute] int id, [FromBody] RacaCriarAtualizarRequisicao racaEditada)
     {
-        var racaResposta =  _racaServico.AtualizarRaca(id, racaEditada);
-
-        return racaResposta;
+        try
+        {
+            return Ok(_racaServico.AtualizarRaca(id, racaEditada));
+        }
+        catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
 
     }
 }

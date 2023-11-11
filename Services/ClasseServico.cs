@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using SistemaRPG.DTOs.Classe;
 using SistemaRPG.Models;
 using SistemaRPG.Repositorio;
+using Mapster;
 
 namespace SistemaRPG.Services;
 
@@ -18,20 +19,26 @@ public class ClasseServico
 
     public ClasseResposta CriarClasse(ClasseCriarAtualizarRequisicao novaClasse)
     {
-        //Todas as regras da requisicao
-        Classe classe = new();
-        classe.Nome = novaClasse.Nome;
+        
+        // //Todas as regras da requisicao
+        // Classe classe = new();
+        // classe.Nome = novaClasse.Nome;
+
+        var classe = novaClasse.Adapt<Classe>();
 
 
         //Regras especificas
         DefinicaoClasses(classe);
+        var agora = DateTime.Now;
+        classe.DataCriacao = agora;
 
         //Enviar para o BD atraves do repositorio
         classe = _classeRepositorio.CriarClasse(classe);
 
 
         //Copiar os modelos para a resposta
-        var classeResposta = ConverterModeloParaResposta(classe);
+        // var classeResposta = ConverterModeloParaResposta(classe);
+        var classeResposta = classe.Adapt<ClasseResposta>();
 
         return classeResposta;
     }
@@ -41,37 +48,36 @@ public class ClasseServico
         //Pedir ao repositorio todos as classes
         var classes = _classeRepositorio.ListarClasses();
 
-        //Copiar os dados dos modelos para as respostas
-        List<ClasseResposta> classeRespostas = new(); //Lista vazia
+        //Copiar da lista de modelo para a lista de Resposta
+        var classeRespostas = classes.Adapt<List<ClasseResposta>>();
+
+        // //Copiar os dados dos modelos para as respostas
+        // List<ClasseResposta> classeRespostas = new(); //Lista vazia
         
-        foreach(var classe in classes)
-        {
-            var classeResposta = ConverterModeloParaResposta(classe);
+        // foreach(var classe in classes)
+        // {
+        //     var classeResposta = ConverterModeloParaResposta(classe);
 
-            //adicionar na lista 
-            classeRespostas.Add(classeResposta);
+        //     //adicionar na lista 
+        //     classeRespostas.Add(classeResposta);
 
-        }
+        // }
 
-        //Retornar a lista de respostas
+        // Retornar a lista de respostas
         return classeRespostas;
+
     }
 
     public ClasseResposta BuscarClassePeloId(int id)
     {
         //Pedir ao repositorio buscar pelo id
-        var classe = _classeRepositorio.BuscarClassePeloId(id);
-
-        if(classe is null)
-        {
-            return null; //No futuro vou mudar para uma exceção
-        }
+        var classe = BuscarPeloId(id, false);
 
         //Copiar do modelo para a resposta
-        var classeResposta = ConverterModeloParaResposta(classe);
+        //var classeResposta = ConverterModeloParaResposta(classe);
 
         //retornando a resposta
-        return classeResposta;
+        return classe.Adapt<ClasseResposta>();
     }
 
     public void RemoverClasse(int id)
@@ -80,12 +86,7 @@ public class ClasseServico
         //Se tiver alguma regra de negócio que tem que fazer antes de remover pode colocar aqui
 
         //Buscando o procedimento que deseja remover
-        var classe = _classeRepositorio.BuscarClassePeloId(id);
-
-        if(classe is null)
-        {
-            return; //Vai ser uma exceção no futuro
-        }
+        var classe = BuscarPeloId(id);
 
         //Mandar para o repositorio remover
         _classeRepositorio.RemoverClasse(classe);
@@ -96,15 +97,11 @@ public class ClasseServico
     public ClasseResposta AtualizarClasse(int id, ClasseCriarAtualizarRequisicao classeEditada)
     {
         //Buscar a classe no BD para poder edita-lo
-        var classe = _classeRepositorio.BuscarClassePeloId(id);
-
-        if(classe is null)
-        {
-            return null; //No futuro vai ser uma exceção (erro)
-        }
+        var classe = BuscarPeloId(id);
 
         //Copiar os dados da requisição para o modelo
-        classe.Nome = classeEditada.Nome;
+        // classe.Nome = classeEditada.Nome;
+        classeEditada.Adapt(classe);
 
         //Regras de negocio especificas
         DefinicaoClasses(classe);
@@ -113,25 +110,26 @@ public class ClasseServico
         _classeRepositorio.AtualizarClasse();
 
         //Copiar os dados do modelo para resposta
-        var classeResposta = ConverterModeloParaResposta(classe);
+        // var classeResposta = ConverterModeloParaResposta(classe);
 
         //Retornando a resposta para o controllador
-        return classeResposta;
+        return classe.Adapt<ClasseResposta>();
 
 
 
     }
 
 
-    private ClasseResposta ConverterModeloParaResposta(Classe modelo)
-    {
-        var classeResposta = new ClasseResposta();
-        classeResposta.Id = modelo.Id;
-        classeResposta.Nome = modelo.Nome;
-        classeResposta.Atributo = modelo.Atributo;
+    // private ClasseResposta ConverterModeloParaResposta(Classe modelo)
+    // {
+    //     var classeResposta = new ClasseResposta();
+    //     classeResposta.Id = modelo.Id;
+    //     classeResposta.Nome = modelo.Nome;
+    //     classeResposta.Atributo = modelo.Atributo;
+    //     classeResposta.DataCriacao = modelo.DataCriacao;
 
-        return classeResposta;
-    }
+    //     return classeResposta;
+    // }
 
     private Classe DefinicaoClasses(Classe classe)
     {
@@ -154,6 +152,18 @@ public class ClasseServico
         else
         {
             classe.Atributo = "DEF: 3, FOR: 3, INT: 3, STM: 6";
+        }
+
+        return classe;
+    }
+
+    private Classe BuscarPeloId(int id, bool tracking = true)
+    {
+        var classe = _classeRepositorio.BuscarClassePeloId(id, tracking);
+
+        if(classe is null)
+        {
+            throw new Exception("Classe não encontrada!");
         }
 
         return classe;

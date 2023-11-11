@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SistemaRPG.Data;
 using SistemaRPG.Models;
 
@@ -25,12 +26,15 @@ public class RacaRepositorio
 
     public List<Raca> ListarRacas()
     {
-        return _contexto.Racas.ToList();
+        return _contexto.Racas.AsNoTracking().ToList();
     }
 
-    public Raca BuscarRacaPeloId(int id)
+    public Raca BuscarRacaPeloId(int id, bool tracking = true)
     {
-        return _contexto.Racas.FirstOrDefault(raca => raca.Id == id);
+        return (tracking) ?
+            _contexto.Racas.FirstOrDefault(raca => raca.Id == id) :
+            _contexto.Racas.AsNoTracking().FirstOrDefault(raca => raca.Id == id);
+        
     }
 
     public void RemoverRaca(Raca raca)

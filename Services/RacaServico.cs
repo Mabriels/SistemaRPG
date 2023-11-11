@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using SistemaRPG.DTOs.Raca;
 using SistemaRPG.Models;
 using SistemaRPG.Repositorio;
+using Mapster;
 
 namespace SistemaRPG.Services;
 
@@ -19,17 +20,20 @@ public class RacaServico
     public RacaResposta CriarRaca(RacaCriarAtualizarRequisicao novaRaca)
     {
 
-        Raca raca = new();
+        var raca = novaRaca.Adapt<Raca>();
 
-        raca.Nome = novaRaca.Nome;
+       
 
+        //Regras especificas
         DefinicaoRaca(raca);
+        var agora = DateTime.Now;
+        raca.DataCriacao = agora;
         
 
         raca = _racaRepositorio.CriarRaca(raca);
 
 
-        var racaResposta = ConverterModeloParaResposta(raca);
+        var racaResposta = raca.Adapt<RacaResposta>();
 
         return racaResposta;
     }
@@ -39,41 +43,22 @@ public class RacaServico
     {
         var racas = _racaRepositorio.ListarRacas();
 
-        List<RacaResposta> racaRespostas = new();
-
-        foreach(var raca in racas)
-        {
-            var racaResposta = ConverterModeloParaResposta(raca);
-
-            racaRespostas.Add(racaResposta);
-        }
-
-        return racaRespostas;
-
-    }
-
-    public RacaResposta BuscarRacaPeloId(int id)
-    {
-        var raca = _racaRepositorio.BuscarRacaPeloId(id);
-
-        if(raca is null)
-        {
-            return null;
-        }
-
-        var racaResposta = ConverterModeloParaResposta(raca);
+        var racaResposta = racas.Adapt<List<RacaResposta>>();
 
         return racaResposta;
     }
 
+    public RacaResposta BuscarRacaPeloId(int id)
+    {
+        var raca = BuscarPeloId(id, false);
+
+
+        return raca.Adapt<RacaResposta>();;
+    }
+
     public void RemoverRaca(int id)
     {
-        var raca = _racaRepositorio.BuscarRacaPeloId(id);
-
-        if (raca is null)
-        {
-            return ;
-        }
+        var raca = BuscarPeloId(id);
 
         _racaRepositorio.RemoverRaca(raca);
     }
@@ -81,15 +66,10 @@ public class RacaServico
     public RacaResposta AtualizarRaca(int id, RacaCriarAtualizarRequisicao racaEditada)
     {
         //Buscando a raça no BD
-        var raca = _racaRepositorio.BuscarRacaPeloId(id);
-
-        if (raca is null)
-        {
-            return null;
-        }
+        var raca = BuscarPeloId(id);
 
         //Copiando os dados da requisicao para o modelo
-        raca.Nome = racaEditada.Nome;
+        racaEditada.Adapt(raca);
 
         //Regra Especifica
         DefinicaoRaca(raca);
@@ -98,7 +78,7 @@ public class RacaServico
         _racaRepositorio.AtualizarRaca();
 
         //Copiando o modelo para resposta com o metodo criado
-        var racaResposta = ConverterModeloParaResposta(raca);
+        var racaResposta = raca.Adapt<RacaResposta>();
 
         //Retornando para o controlador
         return racaResposta;
@@ -106,15 +86,6 @@ public class RacaServico
     }
 
 
-    private RacaResposta ConverterModeloParaResposta(Raca modelo)
-    {
-        var racaResposta = new RacaResposta();
-        racaResposta.Id = modelo.Id;
-        racaResposta.Nome = modelo.Nome;
-        racaResposta.Atributo = modelo.Atributo;
-
-        return racaResposta;
-    }
 
     private Raca DefinicaoRaca(Raca raca)
     {
@@ -136,6 +107,18 @@ public class RacaServico
         else
         {
             raca.Atributo = "DEF: 3, FOR: 3, INT: 3, STM: 6";
+        }
+
+        return raca;
+    }
+
+    private Raca BuscarPeloId(int id, bool tracking = true)
+    {
+        var raca = _racaRepositorio.BuscarRacaPeloId(id, tracking);
+
+        if (raca is null)
+        {
+            throw new Exception("Raça não encontrada!");
         }
 
         return raca;

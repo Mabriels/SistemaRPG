@@ -18,44 +18,72 @@ public class ClasseController : ControllerBase
 
 
     [HttpPost]
-    public ClasseResposta PostClasse([FromBody] ClasseCriarAtualizarRequisicao novaClasse)
+    public ActionResult<ClasseResposta> PostClasse([FromBody] ClasseCriarAtualizarRequisicao novaClasse)
     {
         //Enviar dados para a camada de serviço
        var classeResposta = _classeServico.CriarClasse(novaClasse);
 
         //Retornando resposta
-        return classeResposta;
+        // return classeResposta;
+
+        // return StatusCode(201, classeResposta);
+
+        return CreatedAtAction(nameof(GetClasse), new { id = classeResposta.Id}, classeResposta);
     }
 
 
     [HttpGet]
-    public List<ClasseResposta> GetClasses()
+    public ActionResult<List<ClasseResposta>> GetClasses()
     {
         //retornar a resposta do metodo listas classes do servico
-        return _classeServico.ListarClasses();
+        return Ok(_classeServico.ListarClasses());
     }
 
     [HttpGet("{id:int}")]
-    public ClasseResposta GetClasse([FromRoute] int id)
+    public ActionResult<ClasseResposta> GetClasse([FromRoute] int id)
     {
-        return _classeServico.BuscarClassePeloId(id);
+        try
+        {
+            return Ok(_classeServico.BuscarClassePeloId(id));
+        }
+        catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     [HttpDelete("{id:int}")]
-    public void DeleteClasse([FromRoute] int id)
+    public ActionResult DeleteClasse([FromRoute] int id)
     {
-        //Mandando o serviço excluir
-        _classeServico.RemoverClasse(id);
+        try
+        {
+            //Mandando o serviço excluir
+            _classeServico.RemoverClasse(id);
+            return NoContent();
+        }
+        catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
+
+        
     }
 
     [HttpPut("{id:int}")]
-    public ClasseResposta PutClasse([FromRoute] int id, [FromBody] ClasseCriarAtualizarRequisicao classeEditada)
+    public ActionResult<ClasseResposta> PutClasse([FromRoute] int id, [FromBody] ClasseCriarAtualizarRequisicao classeEditada)
     {
-        //Enviar para o serviço editar
-        var classeResposta = _classeServico.AtualizarClasse(id, classeEditada);
+        try
+        {
+            //Enviar para o serviço editar
+            var classeResposta = _classeServico.AtualizarClasse(id, classeEditada);
 
-        //Retornando para o app cliente (JSON)
-        return classeResposta;
+            //Retornando para o app cliente (JSON)
+            return classeResposta;
+        }
+        catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
 

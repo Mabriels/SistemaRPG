@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaRPG.Data;
 using SistemaRPG.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SistemaRPG.Repositorio;
 
@@ -24,12 +25,17 @@ public class ClasseRepositorio
 
     public List<Classe> ListarClasses()
     {
-        return _contexto.Classes.ToList();
+        return _contexto.Classes.AsNoTracking().ToList();
     }
 
-    public Classe BuscarClassePeloId(int id)
+    public Classe BuscarClassePeloId(int id, bool tracking = true)
     {
-        return _contexto.Classes.FirstOrDefault( classe => classe.Id == id );
+        
+
+        return (tracking) ? 
+            _contexto.Classes.FirstOrDefault( classe => classe.Id == id ) :
+            _contexto.Classes.AsNoTracking().FirstOrDefault( classe => classe.Id == id );
+        
     }
     
 
