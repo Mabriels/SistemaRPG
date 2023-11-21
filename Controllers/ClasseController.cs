@@ -5,12 +5,12 @@ using SistemaRPG.Services;
 namespace SistemaRPG.Controllers;
 
 [Controller]
-[Route("classe")]
+[Route("classes")]
 public class ClasseController : ControllerBase
 {
 
 
-    private ClasseServico _classeServico;
+    private readonly ClasseServico _classeServico;
     public ClasseController([FromServices] ClasseServico servico)
     {
         _classeServico = servico;

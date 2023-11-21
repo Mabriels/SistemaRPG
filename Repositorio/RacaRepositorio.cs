@@ -8,7 +8,7 @@ namespace SistemaRPG.Repositorio;
 public class RacaRepositorio
 {
     
-    private ContextoBD _contexto;
+    private readonly ContextoBD _contexto;
 
     public RacaRepositorio([FromServices] ContextoBD contexto)
     {

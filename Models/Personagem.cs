@@ -30,8 +30,10 @@ public class Personagem
     //Propriedade de Navegação
     public Classe Classe { get; set; }
     public Raca Raca { get; set; }
+    public Usuario Usuario { get; set; }
 
     //Chave Estrangeira
     public int ClasseId { get; set; }
     public int RacaId { get; set; }
+    public int UsuarioId { get; set; }
 }

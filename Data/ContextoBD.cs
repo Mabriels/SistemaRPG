@@ -16,4 +16,5 @@ public class ContextoBD : DbContext
     public DbSet<Classe> Classes { get; set; }
     public DbSet<Equipamento> Equipamentos { get; set; }
     public DbSet<Raca> Racas { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
 }

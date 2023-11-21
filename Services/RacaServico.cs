@@ -9,7 +9,7 @@ namespace SistemaRPG.Services;
 public class RacaServico
 {
     
-    private RacaRepositorio _racaRepositorio;
+    private readonly RacaRepositorio _racaRepositorio;
 
     public RacaServico([FromServices] RacaRepositorio repositorio)
     {

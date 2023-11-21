@@ -5,11 +5,11 @@ using SistemaRPG.Services;
 namespace SistemaRPG.Controllers;
 
 [ApiController]
-[Route("raca")]
+[Route("racas")]
 public class RacaController : ControllerBase
 {
     
-    private RacaServico _racaServico;
+    private readonly RacaServico _racaServico;
 
     public RacaController([FromServices] RacaServico servico)
     {

@@ -8,7 +8,7 @@ namespace SistemaRPG.Repositorio;
 public class ClasseRepositorio
 {
     
-    private ContextoBD _contexto;
+    private readonly ContextoBD _contexto;
 
     public ClasseRepositorio([FromServices] ContextoBD contexto)
     {
