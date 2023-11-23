@@ -25,7 +25,7 @@ public class UsuarioController : ControllerBase
             var usuarioResposta = _usuarioServico.CriarUsuario(novoUsuario);
             return StatusCode(201, usuarioResposta);
         }
-        catch(Exception e)
+        catch (BadHttpRequestException e)
         {
             return BadRequest(e.Message);
         }
@@ -34,7 +34,7 @@ public class UsuarioController : ControllerBase
     [HttpGet]
     public ActionResult<List<UsuarioResposta>> GetUsuarios()
     {
-       return Ok(_usuarioServico.ListarUsuarios());
+        return Ok(_usuarioServico.ListarUsuarios());
     }
 
     [HttpGet("{id:int}")]
@@ -44,7 +44,7 @@ public class UsuarioController : ControllerBase
         {
             return Ok(_usuarioServico.BuscarUsuarioPeloId(id));
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return NotFound(e.Message);
         }
@@ -58,7 +58,7 @@ public class UsuarioController : ControllerBase
             _usuarioServico.RemoverUsuario(id);
             return NoContent();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return NotFound(e.Message);
         }
@@ -73,9 +73,9 @@ public class UsuarioController : ControllerBase
         }
         catch (EmailExistenteException e)
         {
-            return BadRequest(e.Message);   
+            return BadRequest(e.Message);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return NotFound(e.Message);
         }
