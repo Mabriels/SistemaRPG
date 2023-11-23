@@ -23,9 +23,9 @@ public class UsuarioServico
     {
         //verificação de email
         var usuarioExistente = _usuarioRepositorio.BuscarUsuarioPeloEmail(novoUsuario.Email);
-        if(usuarioExistente is not null)
+        if (usuarioExistente is not null)
         {
-           throw new Exception("Email já cadastrado!");
+            throw new BadHttpRequestException("Email já cadastrado!");
         }
 
         var usuario = novoUsuario.Adapt<Usuario>();
@@ -47,7 +47,7 @@ public class UsuarioServico
     }
 
     public UsuarioResposta BuscarUsuarioPeloId(int id)
-    { 
+    {
         return BuscarPeloId(id).Adapt<UsuarioResposta>();
     }
 
@@ -64,10 +64,10 @@ public class UsuarioServico
         var usuario = BuscarPeloId(id);
 
         //verificar se está alterando o email
-        if(usuario.Email != usuarioEditado.Email)
+        if (usuario.Email != usuarioEditado.Email)
         {
             var usuarioExistente = _usuarioRepositorio.BuscarUsuarioPeloEmail(usuarioEditado.Email);
-            if(usuarioExistente is not null)
+            if (usuarioExistente is not null)
             {
                 throw new EmailExistenteException();
             }
@@ -86,7 +86,7 @@ public class UsuarioServico
     {
         var usuario = _usuarioRepositorio.BuscarUsuarioPeloId(id, tracking);
 
-        if(usuario is null)
+        if (usuario is null)
         {
             throw new Exception("Usuario não encontrado!");
         }
