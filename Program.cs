@@ -25,6 +25,8 @@ builder.Services.AddScoped<RacaRepositorio>();
 builder.Services.AddScoped<RacaServico>();
 builder.Services.AddScoped<UsuarioRepositorio>();
 builder.Services.AddScoped<UsuarioServico>();
+builder.Services.AddScoped<PersonagemRepositorio>();
+builder.Services.AddScoped<PersonagemServico>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,8 +38,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

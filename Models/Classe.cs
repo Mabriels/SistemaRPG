@@ -8,15 +8,14 @@ public class Classe
     public int Id { get; set; }
 
     [Required]
-    [Column(TypeName="varchar(80)")]
+    [Column(TypeName = "varchar(80)")]
     public string Nome { get; set; }
 
     [Required]
-    [Column(TypeName="varchar(80)")]
+    [Column(TypeName = "varchar(80)")]
     public string Atributo { get; set; }
 
     [Required]
-    [Column(TypeName="varchar(80)")]
     public DateTime DataCriacao { get; set; }
 
 
@@ -24,5 +23,5 @@ public class Classe
     public List<Personagem> Personagens { get; set; }
 
     public List<Equipamento> Equipamentos { get; set; }
-   
+
 }

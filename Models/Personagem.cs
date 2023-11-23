@@ -7,23 +7,22 @@ public class Personagem
 {
     [Required]
     public int Id { get; set; }
-    
+
     [Required]
-    [Column(TypeName= "varchar(80)")]
+    [Column(TypeName = "varchar(80)")]
     public string Nome { get; set; }
-    
+
     [Required]
     public int Idade { get; set; }
-    
+
     [Required]
-    [Column(TypeName= "varchar(80)")]
+    [Column(TypeName = "varchar(80)")]
     public string Atributo { get; set; }
-    
-    [Column(TypeName= "decimal(10,2)")]
+
+    [Column(TypeName = "decimal(10,2)")]
     public decimal Dinheiro { get; set; }
-    
+
     [Required]
-    [Column(TypeName="varchar(80)")]
     public DateTime DataCriacao { get; set; }
 
 

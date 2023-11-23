@@ -8,15 +8,14 @@ public class Raca
     public int Id { get; set; }
 
     [Required]
-    [Column(TypeName="varchar(80)")]
+    [Column(TypeName = "varchar(80)")]
     public string Nome { get; set; }
 
     [Required]
-    [Column(TypeName="varchar(80)")]
+    [Column(TypeName = "varchar(80)")]
     public string Atributo { get; set; }
-    
+
     [Required]
-    [Column(TypeName="varchar(80)")]
     public DateTime DataCriacao { get; set; }
 
 
