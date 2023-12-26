@@ -27,6 +27,8 @@ builder.Services.AddScoped<UsuarioRepositorio>();
 builder.Services.AddScoped<UsuarioServico>();
 builder.Services.AddScoped<PersonagemRepositorio>();
 builder.Services.AddScoped<PersonagemServico>();
+builder.Services.AddScoped<EquipamentoRepositorio>();
+builder.Services.AddScoped<EquipamentoServico>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

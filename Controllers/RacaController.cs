@@ -8,7 +8,7 @@ namespace SistemaRPG.Controllers;
 [Route("racas")]
 public class RacaController : ControllerBase
 {
-    
+
     private readonly RacaServico _racaServico;
 
     public RacaController([FromServices] RacaServico servico)
@@ -25,7 +25,7 @@ public class RacaController : ControllerBase
         // return racaResposta;
 
         // return StatusCode(201, racaResposta);
-        return CreatedAtAction(nameof(GetRaca), new {id = racaResposta.Id}, racaResposta);
+        return CreatedAtAction(nameof(GetRaca), new { id = racaResposta.Id }, racaResposta);
     }
 
     [HttpGet]
@@ -33,7 +33,7 @@ public class RacaController : ControllerBase
     {
         return Ok(_racaServico.ListarRacas());
     }
-    
+
 
     [HttpGet("{id:int}")]
     public ActionResult<RacaResposta> GetRaca([FromRoute] int id)
@@ -42,11 +42,11 @@ public class RacaController : ControllerBase
         {
             return Ok(_racaServico.BuscarRacaPeloId(id));
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return NotFound(e.Message);
         }
-        
+
     }
 
     [HttpDelete("{id:int}")]
@@ -54,13 +54,13 @@ public class RacaController : ControllerBase
     {
         try
         {
-            _racaServico.RemoverRaca(id); 
+            _racaServico.RemoverRaca(id);
 
             return NoContent();
         }
         catch (Exception e)
         {
-           return NotFound(e.Message);
+            return NotFound(e.Message);
         }
     }
 
@@ -71,10 +71,13 @@ public class RacaController : ControllerBase
         {
             return Ok(_racaServico.AtualizarRaca(id, racaEditada));
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return NotFound(e.Message);
         }
 
     }
+
+
+
 }

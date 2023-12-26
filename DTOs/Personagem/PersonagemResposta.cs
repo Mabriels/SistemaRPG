@@ -9,17 +9,11 @@ public class PersonagemResposta
     public int Id { get; set; }
     public string Nome { get; set; }
     public int Idade { get; set; }
-    public string Atributo { get; set; }
     public decimal Dinheiro { get; set; }
-    public DateTime DataCriacao { get; set; }
-
     public int UsuarioId { get; set; }
     public UsuarioResposta Usuario { get; set; }
-
     public int ClasseId { get; set; }
     public ClasseResposta Classe { get; set; }
-
     public int RacaId { get; set; }
     public RacaResposta Raca { get; set; }
-
 }

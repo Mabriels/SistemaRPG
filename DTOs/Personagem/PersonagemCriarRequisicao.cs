@@ -6,7 +6,7 @@ public class PersonagemCriarRequisicao
     public int Idade { get; set; }
     public string Atributo { get; set; }
     public decimal Dinheiro { get; set; }
+    public int UsuarioId { get; set; }
     public int ClasseId { get; set; }
     public int RacaId { get; set; }
-    public int UsuarioId { get; set; }
 }
