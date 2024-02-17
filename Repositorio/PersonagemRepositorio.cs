@@ -28,7 +28,11 @@ public class PersonagemRepositorio
 
     public List<Personagem> ListarPersonagem()
     {
-        return _contexto.Personagens.AsNoTracking().ToList();
+        return _contexto.Personagens
+        .Include(a => a.Usuario)
+        .Include(a => a.Classe)
+        .Include(a => a.Raca)
+        .AsNoTracking().ToList();
     }
 
     public Personagem BuscarPersonagemPeloId(int id, bool tracking = true)

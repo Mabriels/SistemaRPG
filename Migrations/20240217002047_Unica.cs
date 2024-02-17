@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SistemaRPG.Migrations
 {
     /// <inheritdoc />
-    public partial class Atualizado : Migration
+    public partial class Unica : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,7 +24,8 @@ namespace SistemaRPG.Migrations
                     Nome = table.Column<string>(type: "varchar(80)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Atributo = table.Column<string>(type: "varchar(80)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,11 +42,31 @@ namespace SistemaRPG.Migrations
                     Nome = table.Column<string>(type: "varchar(80)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Atributo = table.Column<string>(type: "varchar(80)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Racas", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nome = table.Column<string>(type: "varchar(80)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "varchar(80)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Senha = table.Column<string>(type: "varchar(80)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -59,6 +81,7 @@ namespace SistemaRPG.Migrations
                     Atributo = table.Column<string>(type: "varchar(80)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Preco = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ClasseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -85,8 +108,10 @@ namespace SistemaRPG.Migrations
                     Atributo = table.Column<string>(type: "varchar(80)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Dinheiro = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ClasseId = table.Column<int>(type: "int", nullable: false),
-                    RacaId = table.Column<int>(type: "int", nullable: false)
+                    RacaId = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,6 +126,12 @@ namespace SistemaRPG.Migrations
                         name: "FK_Personagens_Racas_RacaId",
                         column: x => x.RacaId,
                         principalTable: "Racas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Personagens_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -120,6 +151,17 @@ namespace SistemaRPG.Migrations
                 name: "IX_Personagens_RacaId",
                 table: "Personagens",
                 column: "RacaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Personagens_UsuarioId",
+                table: "Personagens",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Email",
+                table: "Usuarios",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -136,6 +178,9 @@ namespace SistemaRPG.Migrations
 
             migrationBuilder.DropTable(
                 name: "Racas");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
         }
     }
 }

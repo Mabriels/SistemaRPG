@@ -3,7 +3,42 @@ using SistemaRPG.Data;
 using SistemaRPG.Repositorio;
 using SistemaRPG.Services;
 
+//Imports para a parte de autenticação
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// builder.Services.AddCors(options =>
+// {
+//   options.AddPolicy(name: MyAllowSpecificOrigins,
+//                     policy =>
+//                     {
+//                       policy.WithOrigins("http://localhost:5173"); // add the allowed origins  
+//                     });
+// });
+
+builder.Services.AddCors(options =>
+{
+  options.AddDefaultPolicy(
+      policy =>
+      {
+        policy.WithOrigins("http://localhost:5266")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+      });
+});
+
+// builder.Services.AddCors(options =>
+// {
+//     options.AddDefaultPolicy(
+//         policy =>
+//         {
+//             policy.WithOrigins("http://example.com",
+//                                 "http://www.contoso.com");
+//         });
+// });
 
 //Adicionando a minha classe de contexto na API
 builder.Services.AddDbContext<ContextoBD>(
@@ -17,6 +52,23 @@ builder.Services.AddDbContext<ContextoBD>(
   )
 );
 
+//Configurações para usar Autenticação com JWT
+var JWTChave = Encoding.ASCII.GetBytes(builder.Configuration["JWTChave"]);
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+      options.SaveToken = true;
+      options.TokenValidationParameters = new TokenValidationParameters
+      {
+        IssuerSigningKey = new SymmetricSecurityKey(JWTChave),
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
+      };
+    });
+
+
 // Add services to the container.
 
 builder.Services.AddScoped<ClasseRepositorio>();
@@ -29,6 +81,7 @@ builder.Services.AddScoped<PersonagemRepositorio>();
 builder.Services.AddScoped<PersonagemServico>();
 builder.Services.AddScoped<EquipamentoRepositorio>();
 builder.Services.AddScoped<EquipamentoServico>();
+builder.Services.AddScoped<AutenticacaoServico>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -46,6 +99,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
